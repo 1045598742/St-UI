@@ -1,0 +1,83 @@
+@import './base';
+
+$name: button;
+$style-names: (
+  background-color,
+  border-color
+);     
+$size-list: (big, normal, small);   
+
+.#{get-component-name($name)} { 
+  --st-button-small-padding: 5px 11px;
+  --st-button-padding: 8px 15px; 
+  --st-button-big-padding: 12px 19px;
+  --st-button-small-font-size: 12px;
+  --st-button-font-size: 14px;  
+  --st-button-big-font-size: 14px;
+  --st-button-small-height: 24px;
+  --st-button-height: 32px;
+  --st-button-big-height: 40px;
+
+  outline: none;
+  transition: 0.15s;
+  box-sizing: border-box;
+  color: var(--white-color);
+  padding: 8px 15px;
+  height: 32px;  
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  @include component-action(
+    $style-names,
+    (
+      hover: light,
+      focus: light,
+      active: dark
+    )
+  );
+  @include style-mixin((border-radius, border));
+  @include theme-mixin($style-names, is-disabled);
+
+  &.is-small {
+    padding: 5px 11px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  &.is-big {
+    padding: 12px 19px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  &.is-disabled {
+    cursor: not-allowed;
+  };
+
+  &.is-round {
+    border-radius: 20px;
+  };
+
+  &.is-plain {
+    background-color: transparent;
+    border: var(--border);
+
+    &:hover{
+      color: var(--default-light-color);
+    }
+
+    &:focus{
+      color: var(--default-light-color);
+    }
+  };
+
+  &.is-text {
+    background-color: transparent;
+    border: none;
+    color: var(--default-color);
+  };
+
+  & + & {
+    margin-left: 12px;
+  };
+}

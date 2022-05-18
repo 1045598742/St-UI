@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>音频可视化</title>
+  <style>
+    html {
+      background: black;
+    }
+
+    .stage {
+      height: 100px;
+      width: 100px;
+      border-radius: 50%;
+      /* margin: 100px auto; */
+      background-color: aqua;
+    }
+
+    .stage .el {
+      width: 5px;
+      height: 3px;
+      border-radius: 5px;
+      background: linear-gradient(#da2864, #16a5a3);
+      position: absolute;
+      transform-origin: 0 0;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="btn">点击</button>
+  <button id="voice">音量</button>
+  <button id="zt">暂停</button>
+  <button id="jx">继续</button>
+  <div class="stage"></div>
+  <!-- <audio id="audio" controls autoplay loop src="../static/剑魂.mp3"></audio> -->
+  <script src="anime.min.js"></script>
+  <script>
+    // const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+    const audioCtx = new window.AudioContext()
+    const gainNode = audioCtx.createGain()
+    const biquadFilter = audioCtx.createBiquadFilter(); // 创建低频滤波器， 返回 BiquadFilterNode。
+    let distortion = audioCtx.createWaveShaper(); // 创建双二阶滤波器，返回 WaveShaperNode.常用于添加失真效果
+    let audioBufferSourceNode = null
+    let analyser = audioCtx.createAnalyser()
+    let buffer = null
+    let time = 0
+    async function audioPlay(file) {
+      distortion.curve = makeDistortionCurve(400);
+      const fileReader = new FileReader()
+      fileReader.onload = async (e) => {
+        buffer = await audioCtx.decodeAudioData(e.target.result)
+        // console.log(buffer);
+        if (audioBufferSourceNode) {
+          audioBufferSourceNode.stop()
+        }
+        // audioCtx.currentTime
+        audioBufferSourceNode = null
+        audioBufferSourceNode = audioCtx.createBufferSource()
+        audioBufferSourceNode.buffer = buffer
+        audioBufferSourceNode.loop = true
+        // audioBufferSourceNode.playbackRate.value = 1.1
+        audioBufferSourceNode.connect(gainNode) // 音频头 ->链接到 ->音量控制节点
+        gainNode.connect(audioCtx.destination); // 音量控制节点 ->链接到 -> 音频尾
+        // 设置重低音
+        // gainNode.connect(biquadFilter);
+        // biquadFilter.connect(audioCtx.destination);
+
+        // biquadFilter.connect(distortion);
+        // distortion.connect(audioCtx.destination);
+
+        // audioBufferSourceNode.connect(audioCtx.destination)
+        audioBufferSourceNode.connect(analyser)
+        audioBufferSourceNode.start(0, time)
+        time+= 5
+        // audioBufferSourceNode.detune.value = 0.1
+        getMusicData()
+      }
+      voice.onclick = () => {
+        // gainNode.gain.value = '0.1'; // 设置音量
+        // gainNode.disconnect(audioCtx.destination)
+      }
+      zt.onclick = () => {
+        audioCtx.suspend()
+      }
+      jx.onclick = () => {
+        audioCtx.resume()
+      }
+      fileReader.readAsArrayBuffer(file)
+    };
+
+    // 加载音乐波形分析器
+    let getMusicData = function () {
+      requestAnimationFrame(getMusicData)
+      const audioInfoArray = new Uint8Array(analyser.frequencyBinCount)
+      analyser.getByteFrequencyData(audioInfoArray)
+      // console.log(audioInfoArray);
+      animeDiv(audioInfoArray)
+    }
+
+    // 初始化div
+    let initDiv = function (num, r) {
+      const middleWidth = document.documentElement.clientWidth / 2
+      const middleHeight = document.documentElement.clientHeight / 2
+      const avd = 360 / num
+      const ahd = avd * Math.PI / 180
+      let stageDivEl = document.querySelector('.stage')
+      for (let i = 0; i < num; i++) {
+        let divEl = document.createElement('div')
+        // divEl.innerHTML = i + 1
+        divEl.classList.add('el')
+        stageDivEl.append(divEl)
+        anime({
+          targets: divEl,
+          translateX: [middleWidth, middleWidth + Math.sin(ahd * i) * r],
+          translateY: [middleHeight, middleHeight + Math.cos(ahd * i) * r],
+          // rotate: [-avd * i],
+          loop: false,
+          duration: 1
+        })
+      }
+    }
+
+    initDiv(60, 70)
+
+
+    // 形成动画
+    let animeDiv = function (audioInfoArray) {
+      let stageDivEl = document.querySelector('.stage')
+      for (let i = 0; i < stageDivEl.children.length; i++) {
+        if (audioInfoArray[i] == 0) {
+          audioInfoArray[i] = 30
+        }
+        anime({
+          targets: stageDivEl.children[i],
+          height: [audioInfoArray[i] / 8],
+          duration: 1
+        })
+
+      }
+    }
+
+    // 失真
+    function makeDistortionCurve(amount) {
+      var k = typeof amount === "number" ? amount : 50,
+        n_samples = 44100,
+        curve = new Float32Array(n_samples),
+        deg = Math.PI / 180,
+        i = 0,
+        x;
+      for (; i < n_samples; ++i) {
+        x = (i * 2) / n_samples - 1;
+        curve[i] = ((3 + k) * x * 20 * deg) / (Math.PI + k * Math.abs(x));
+      }
+      return curve;
+    }
+
+    // BaseAudioContext
+    btn.onclick = () => {
+      const xhr = new XMLHttpRequest()
+      xhr.open('GET', 'static/秒针.mp3')
+      xhr.responseType = 'blob'
+      xhr.send()
+
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          // console.log(xhr.response);
+          audioPlay(xhr.response)
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>

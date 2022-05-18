@@ -1,0 +1,15 @@
+@import './base';
+
+.st-input {
+  display: inline-flex;
+  align-items: center;
+
+  &__wrapper {
+    display: inherit;
+    align-items: center;
+  }
+
+  &__suffix {
+    cursor: pointer;
+  }
+}

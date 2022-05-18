@@ -1,0 +1,32 @@
+{
+  // "vetur.validation.template": false, // 把 vetur 扩展的 template 格式化去掉
+  "editor.formatOnSave": false,
+  "eslint.enable": true, // eslint 格式化的配置
+  "eslint.run": "onType",
+  "editor.tabSize": 2,
+  "editor.autoClosingQuotes": "always",
+  "javascript.preferences.quoteStyle": "single",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+  "editor.codeActionsOnSave": {
+    // For ESLint
+    "source.fixAll.eslint": true,
+    // For TSLint
+    "source.fixAll.tslint": true,
+    // For Stylelint
+    "source.fixAll.stylelint": true
+  },
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+    "stylelint.validate": ["css", "postcss", "scss"],
+  "eslint.options": {
+    "extensions": [".js", ".vue", ".json"]
+  }
+}

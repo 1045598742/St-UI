@@ -1,0 +1,36 @@
+.st-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  flex-basis: auto;
+  box-sizing: border-box;
+  min-width: 0;
+
+  &.is-vertical {
+    flex-direction: column;
+  }
+}
+
+.st-header {
+  box-sizing: border-box;
+  height: var(--st-header-width);
+}
+
+.st-aside {
+  overflow: auto;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: var(--st-aside-width);
+}
+
+.st-main {
+  display: block;
+  flex: 1;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+.st-footer {
+  box-sizing: border-box;
+  height: var(--st-footer-width);
+}

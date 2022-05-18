@@ -1,0 +1,7 @@
+@use './switch';
+@import './base';
+
+
+:root {
+  @include set-css-var;
+}

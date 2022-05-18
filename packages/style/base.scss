@@ -1,0 +1,59 @@
+@import './theme';
+@import './icon/iconfont.css';
+
+$prefix: st;
+@mixin set-css-var {
+    @each $theme, $color in $theme-color {
+    --#{$theme}-color: #{$color};
+    /* stylelint-disable-next-line scss/no-global-function-names */
+    --#{$theme}-light-color: #{lighten($color, 10%)};
+    /* stylelint-disable-next-line scss/no-global-function-names */
+    --#{$theme}-dark-color: #{darken($color, 10%)};
+    /* stylelint-disable-next-line scss/no-global-function-names */
+    --#{$theme}-disabled-color: #{lighten($color, 10%)};
+    --default-text-color: #cdd1ea
+  ;};
+
+  --white-color: white;
+  --border-radius: 4px;
+  /* stylelint-disable-next-line scss/no-global-function-names */
+  --border: 1px solid #{$default};
+}
+
+@function get-component-name($name) {
+  @return $prefix + '-' + $name; };
+
+@mixin theme-mixin($style-names, $disabled: '') {
+  @each $theme in map-keys($theme-color){
+    &__#{$theme} {
+      @each $name in $style-names {
+        #{$name}: var(--#{$theme}-color);
+        @if  $disabled == 'is-disabled' {
+          &.#{$disabled} {
+            #{$name}: var(--#{$theme}-disabled-color);
+          }
+        }
+      }
+    }
+  }
+};
+
+@mixin style-mixin($style-names) {
+  @each $name in $style-names {
+    #{$name}: var(--#{$name});
+  };
+};
+
+@mixin component-action($style-names, $actions) {
+  @each $theme in map-keys($theme-color){
+    &__#{$theme} {
+      @each $action-name, $brightness in $actions {
+        &:#{$action-name} {
+          @each $name in $style-names {
+            #{$name}: var(--#{$theme}-#{$brightness}-color);
+          }
+        } 
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+$default: #294ae8 !default;
+$success: #7db875 !default;
+$danger: #f08 !default;
+$warning: #f98823 !default;
+$theme-color: (
+  default: $default,
+  success: $success,
+  danger: $danger,
+  warning: $warning
+);
