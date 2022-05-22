@@ -1,14 +1,6 @@
-import type { App } from 'vue'
 import Radio from './src/radio.vue'
 import RadioGroup from './src/radio-group.vue'
-// import './style/index.ts'
+import { installUtil } from '@st-ui/utils/install'
 
-Radio.install = function (app: App) {
-	app.component('st-radio', Radio)
-}
-
-RadioGroup.install = function (app: App) {
-	app.component('st-radio-group', RadioGroup)
-}
-
-export { Radio, RadioGroup }
+export const StRadio = installUtil(Radio)
+export const StRadioGroup = installUtil(RadioGroup)

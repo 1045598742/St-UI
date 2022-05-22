@@ -1,11 +1,7 @@
-import type { App } from 'vue'
-import stCheckbox from './src/checkbox.vue'
-import StCheckboxGroup from './src/checkbox-group.vue'
+import checkbox from './src/checkbox.vue'
+import checkboxGroup from './src/checkbox-group.vue'
 import './style/index.ts'
+import { installUtil } from '@st-ui/utils/install'
 
-export default {
-	install(app: App) {
-		app.component('st-checkbox', stCheckbox)
-		app.component('st-checkbox-group', StCheckboxGroup)
-	}
-}
+export const StCheckbox = installUtil(checkbox)
+export const StCheckboxGroup = installUtil(checkboxGroup)

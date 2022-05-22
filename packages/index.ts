@@ -1,19 +1,34 @@
-import type { App } from 'vue'
-import button from './components/button'
-import input from './components/input'
-import checkbox from './components/checkbox'
-import container from './components/container'
-import { Radio, RadioGroup } from './components/radio'
-import Switch from './components/switch'
+import type { Plugin } from 'vue'
+import { StButton, StButtonGroup } from './components/button'
+import { StInput } from './components/input'
+import { StCheckbox, StCheckboxGroup } from './components/checkbox'
+import { StAside, StMain, StHeader, StFooter } from './components/container'
+import { StRadio, StRadioGroup } from './components/radio'
+import { StSwitch } from './components/switch'
 import './style/index.scss'
-export default {
-	install(app: App) {
-		app.use(button)
-		app.use(input)
-		app.use(checkbox)
-		app.use(container)
-		app.use(Radio as any)
-		app.use(RadioGroup as any)
-		app.use(Switch as any)
+
+const install: Plugin = {
+	install(app) {
+		app.use(StButton)
+		app.use(StButtonGroup)
+		app.use(StInput)
+		app.use(StCheckbox)
+		app.use(StCheckboxGroup)
+		app.use(StAside)
+		app.use(StMain)
+		app.use(StHeader)
+		app.use(StFooter)
+		app.use(StRadio)
+		app.use(StRadioGroup)
+		app.use(StSwitch)
 	}
 }
+
+export * from './components/button'
+export * from './components/input'
+export * from './components/checkbox'
+export * from './components/container'
+export * from './components/radio'
+export * from './components/switch'
+
+export default install

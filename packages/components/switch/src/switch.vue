@@ -11,10 +11,7 @@
 			</span>
 		</slot>
 		<!-- 开关主要部分 -->
-		<span
-			class="st-switch__content"
-			:style="{ 'background-color': checked ? openColor : closeColor }"
-		>
+		<span class="st-switch__content" :style="contentStyle">
 			<!-- 开关圆按钮 -->
 			<span class="st-switch__btn"></span>
 			<!-- 开关内测的文案 -->
@@ -44,6 +41,7 @@
 
 <script lang="ts">
 import { computed } from 'vue'
+import type { StyleValue, PropType } from 'vue'
 export default {
 	name: 'StSwitch'
 }
@@ -83,8 +81,12 @@ const props = defineProps({
 		default: '关'
 	},
 	textPosition: {
-		type: String,
+		type: String as PropType<'out' | 'inner'>,
 		default: 'inner' // out | inner
+	},
+	contentWidth: {
+		type: String,
+		default: ''
 	}
 })
 
@@ -92,6 +94,16 @@ const emit = defineEmits(['update:modelValue', 'change'])
 
 /** 计算是否是开启状态 */
 const checked = computed(() => props.modelValue === props.openValue)
+
+const contentStyle = computed<StyleValue>(() => {
+	const styles: StyleValue = {
+		'background-color': checked ? props.openColor : props.closeColor
+	}
+	if (props.contentWidth) {
+		styles.width = props.contentWidth
+	}
+	return styles
+})
 
 function handleChange(ev: Event) {
 	const { checked } = ev.target as HTMLInputElement

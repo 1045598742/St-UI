@@ -1,12 +1,4 @@
-import type { App } from 'vue'
+import { installUtil } from '@st-ui/utils/install'
 import Switch from './src/switch.vue'
 
-Object.defineProperty(Switch, 'install', {
-	get() {
-		return function (app: App) {
-			app.component('st-switch', Switch)
-		}
-	}
-})
-
-export default Switch
+export const StSwitch = installUtil(Switch)

@@ -1,19 +1,13 @@
-// import type { PropType } from 'vue'
-
-// type Size = 'large' | 'small' | 'mini'
-
-export const buttonTypes = [
-	'default',
-	'primary',
-	'success',
-	'warning',
-	'danger'
-] as const
+import type { PropType } from 'vue'
 
 export const buttonProps = {
+	/**
+	 * 主题类型
+	 */
 	type: {
-		type: String,
-		values: buttonTypes,
+		type: String as PropType<
+			'default' | 'primary' | 'success' | 'warning' | 'danger'
+		>,
 		default: 'default'
 	},
 

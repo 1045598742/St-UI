@@ -69,7 +69,8 @@ import {
 	defineExpose,
 	computed,
 	useAttrs,
-	shallowRef
+	shallowRef,
+	PropType
 } from 'vue'
 import type { StyleValue } from 'vue'
 
@@ -93,7 +94,7 @@ const el = computed(() =>
 
 const props = defineProps({
 	type: {
-		type: String,
+		type: String as PropType<'text' | 'textarea'>,
 		default: 'text'
 	},
 	modelValue: {
