@@ -28,12 +28,6 @@ const inputRef = shallowRef()
 
 const inputValue = ref('')
 
-setTimeout(() => {
-	if (inputRef) {
-		inputRef.value.focus()
-	}
-}, 2000)
-
 function blur(ev: FocusEvent) {
 	console.log(ev, 'blur')
 }

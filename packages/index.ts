@@ -5,6 +5,7 @@ import { StCheckbox, StCheckboxGroup } from './components/checkbox'
 import { StAside, StMain, StHeader, StFooter } from './components/container'
 import { StRadio, StRadioGroup } from './components/radio'
 import { StSwitch } from './components/switch'
+import { StSlider } from './components/slider'
 import './style/index.scss'
 
 const install: Plugin = {
@@ -21,6 +22,7 @@ const install: Plugin = {
 		app.use(StRadio)
 		app.use(StRadioGroup)
 		app.use(StSwitch)
+		app.use(StSlider)
 	}
 }
 

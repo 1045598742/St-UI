@@ -29,6 +29,10 @@ export const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/switch',
 		component: () => import('@/views/switch.vue')
+	},
+	{
+		path: '/slider',
+		component: () => import('@/views/slider.vue')
 	}
 ]
 

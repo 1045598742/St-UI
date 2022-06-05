@@ -97,7 +97,7 @@ const config = {
 		}),
 		new VueLoaderPlugin(),
 		new webpack.DefinePlugin({
-			'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+			NODE_ENV: JSON.stringify(process.env.NODE_ENV),
 			// 就是在vue@3.0.0-rc.3版本开始，强烈推荐我们设置  __VUE_OPTIONS_API__, __VUE_PROD_DEVTOOLS__  两个属性，例如使用 DefinePlugin，我们在webpack的plugins中可以这样设置：
 			// https://github.com/vuejs/core/tree/main/packages/vue#bundler-build-feature-flags
 			__VUE_OPTIONS_API__: true,

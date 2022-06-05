@@ -14,5 +14,6 @@ declare module 'vue' {
 		StRadio: typeof import('@st-ui/components/radio/index').StRadio
 		StRadioGroup: typeof import('@st-ui/components/radio/index').StRadioGroup
 		StSwitch: typeof import('@st-ui/components/switch/index').StSwitch
+		StSlider: typeof import('@st-ui/components/slider/index').StSlider
 	}
 }
