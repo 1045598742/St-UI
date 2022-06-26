@@ -14,6 +14,7 @@
 <script lang="ts">
 import { shallowRef, computed } from 'vue'
 import { precisionFormat } from '@st-ui/utils/math'
+import { domEvent } from '@st-ui/utils/dom'
 export default {
 	name: 'StSlider',
 	inheritAttrs: false
@@ -71,10 +72,11 @@ function sliderMouseDown(ev: MouseEvent) {
 	let left: number | string = 0
 	const { offsetX } = ev
 	const rect = sliderBoxEl.getBoundingClientRect()
-	const mousemoveCallback = (ev: MouseEvent) => {
+	const mousemoveCallback = (ev: Event) => {
 		ev.preventDefault()
 		let leftValue =
-			(ev.pageX - rect.left - offsetX + btnEl.offsetWidth / 2) / rect.width
+			((ev as MouseEvent).pageX - rect.left - offsetX + btnEl.offsetWidth / 2) /
+			rect.width
 		if (leftValue <= 0) {
 			leftValue = 0
 		} else if (leftValue >= 1) {
@@ -93,11 +95,11 @@ function sliderMouseDown(ev: MouseEvent) {
 			precisionFormat((+left / 100) * (props.max - props.min) + props.min)
 		)
 	}
-	window.addEventListener('mousemove', mousemoveCallback)
+	domEvent.on(window, 'mousemove', mousemoveCallback)
 	const mouseUpCallback = () => {
-		window.removeEventListener('mousemove', mousemoveCallback)
-		window.removeEventListener('mouseup', mouseUpCallback)
+		domEvent.off(window, 'mousemove', mousemoveCallback)
+		domEvent.off(window, 'mouseup', mouseUpCallback)
 	}
-	window.addEventListener('mouseup', mouseUpCallback)
+	domEvent.on(window, 'mouseup', mouseUpCallback)
 }
 </script>
