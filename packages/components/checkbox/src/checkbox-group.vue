@@ -5,6 +5,7 @@
 </template>
 
 <script lang="ts">
+import { typeUtils } from '@st-ui/utils/typeUtils'
 import { computed, defineProps, defineEmits, provide } from 'vue'
 
 export default {
@@ -46,8 +47,8 @@ provide('groupMap', groupMap)
 const groupConfig = computed(() => {
 	const { length } = props.modelValue
 	return {
-		isMin: typeof props.min === 'number' && length <= props.min,
-		isMax: typeof props.max === 'number' && length >= props.max
+		isMin: typeUtils.isNumber(props.min) && length <= props.min,
+		isMax: typeUtils.isNumber(props.max) && length >= props.max
 	}
 })
 

@@ -1,13 +1,19 @@
 <template>
 	<div ref="sliderBox" class="st-slider">
-		<div ref="btn" class="st-slider__btn" :style="{ left: leftStyle }"></div>
-		<div class="line"></div>
+		<div
+			ref="btn"
+			class="st-slider__btn"
+			:style="{ left: leftStyle }"
+			@mousedown="sliderMouseDown"
+		></div>
+		<div class="st-slider__line"></div>
 	</div>
 	<div>{{ modelValue }}</div>
 </template>
 
 <script lang="ts">
-import { onMounted, shallowRef, ref, computed } from 'vue'
+import { shallowRef, computed } from 'vue'
+import { precisionFormat } from '@st-ui/utils/math'
 export default {
 	name: 'StSlider',
 	inheritAttrs: false
@@ -57,74 +63,41 @@ const leftStyle = computed(() => {
 	}%`
 })
 
-/**
- * 处理计算精度
- * @param value
- */
-function precisionFormat(value: number) {
-	return parseFloat(value.toFixed(9))
-}
-
-onMounted(() => {
+/** 鼠标放下触发 */
+function sliderMouseDown(ev: MouseEvent) {
+	if (props.disabled) return
 	const btnEl = btn.value as HTMLDivElement
 	const sliderBoxEl = sliderBox.value as HTMLDivElement
-	btnEl.addEventListener('mousedown', (ev) => {
-		let left: number | string = 0
-		const { offsetX } = ev
-		const rect = sliderBoxEl.getBoundingClientRect()
-		const mousemoveCallback = (ev: MouseEvent) => {
-			ev.preventDefault()
-			let leftValue =
-				(ev.pageX - rect.left - offsetX + btnEl.offsetWidth / 2) / rect.width
-			if (leftValue <= 0) {
-				leftValue = 0
-			} else if (leftValue >= 1) {
-				leftValue = 1
-			}
-			// console.log(leftValue)
-			if (props.needStep) {
-				const equally = props.step / (props.max - props.min)
-				const multiple = precisionFormat(equally / 0.01)
-				const value = Math.round(leftValue / equally) * multiple
-				left = value
-			} else {
-				left = (leftValue * 100).toFixed(2)
-			}
-			emits(
-				'update:modelValue',
-				precisionFormat((+left / 100) * (props.max - props.min) + props.min)
-			)
+	let left: number | string = 0
+	const { offsetX } = ev
+	const rect = sliderBoxEl.getBoundingClientRect()
+	const mousemoveCallback = (ev: MouseEvent) => {
+		ev.preventDefault()
+		let leftValue =
+			(ev.pageX - rect.left - offsetX + btnEl.offsetWidth / 2) / rect.width
+		if (leftValue <= 0) {
+			leftValue = 0
+		} else if (leftValue >= 1) {
+			leftValue = 1
 		}
-		window.addEventListener('mousemove', mousemoveCallback)
-		const mouseUpCallback = () => {
-			window.removeEventListener('mousemove', mousemoveCallback)
-			window.removeEventListener('mouseup', mouseUpCallback)
+		if (props.needStep) {
+			const equally = props.step / (props.max - props.min)
+			const multiple = precisionFormat(equally / 0.01)
+			const value = Math.round(leftValue / equally) * multiple
+			left = value
+		} else {
+			left = (leftValue * 100).toFixed(2)
 		}
-		window.addEventListener('mouseup', mouseUpCallback)
-	})
-})
-</script>
-
-<style lang="scss">
-.st-slider {
-	position: relative;
-	width: 30%;
-	margin: 0 auto;
-	.st-slider__btn {
-		cursor: pointer;
-		position: absolute;
-		width: 20px;
-		height: 20px;
-		background-color: red;
-		border-radius: 50%;
-		top: 50%;
-		transform: translate(-50%, -50%);
+		emits(
+			'update:modelValue',
+			precisionFormat((+left / 100) * (props.max - props.min) + props.min)
+		)
 	}
-	.line {
-		width: 100%;
-		height: 4px;
-		border-radius: 2px;
-		background-color: blue;
+	window.addEventListener('mousemove', mousemoveCallback)
+	const mouseUpCallback = () => {
+		window.removeEventListener('mousemove', mousemoveCallback)
+		window.removeEventListener('mouseup', mouseUpCallback)
 	}
+	window.addEventListener('mouseup', mouseUpCallback)
 }
-</style>
+</script>
