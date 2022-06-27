@@ -6,6 +6,7 @@
 	&__btn {
 		cursor: pointer;
 		position: absolute;
+		z-index: 1;
 		width: 20px;
 		height: 20px;
 		background-color: red;
@@ -19,5 +20,16 @@
 		height: 4px;
 		border-radius: 2px;
 		background-color: blue;
+	}
+
+	&__stop-item {
+		display: block;
+		width: 4px;
+		height: 4px;
+		box-sizing: border-box;
+		position: absolute;
+		transform: translateX(-50%);
+		border-radius: 50%;
+		background-color: white;
 	}
 }
