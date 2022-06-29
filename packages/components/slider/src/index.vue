@@ -10,7 +10,7 @@
 			v-if="sliderStyle.right"
 			ref="rightBtn"
 			class="st-slider__btn"
-			:style="{ left: sliderStyle.right }"
+			:style="{ left: sliderStyle.right, background: 'green' }"
 			@mousedown="sliderMouseDown($event, 'rightBtn')"
 		></div>
 		<div class="st-slider__line">
@@ -24,15 +24,27 @@
 					class="st-slider__stop-item"
 				></span>
 			</template>
+			<span
+				v-for="mask in maskList"
+				:key="mask.num"
+				:style="{
+					left: `${((mask.num - min) / (max - min)) * 100}%`
+				}"
+				class="st-slider__stop-item"
+			>
+				<span class="st-slider__label">{{ mask.label }}</span>
+			</span>
 		</div>
 	</div>
 	<div>{{ modelValue }}</div>
 </template>
 
 <script lang="ts">
-import { shallowRef, computed, PropType } from 'vue'
+import { shallowRef, ref, computed, PropType } from 'vue'
+import type { CSSProperties } from 'vue'
 import { precisionFormat } from '@st-ui/utils/math'
 import { domEvent } from '@st-ui/utils/dom'
+import { typeUtils } from '@st-ui/utils/typeUtils'
 export default {
 	name: 'StSlider',
 	inheritAttrs: false
@@ -45,6 +57,11 @@ const sliderBox = shallowRef<HTMLDivElement>()
 
 type RangeModelValue = [number, number]
 
+type BtnEnum = 'leftBtn' | 'rightBtn'
+
+type Mask = { label: string; style?: CSSProperties }
+type Masks = Mask | string
+
 const props = defineProps({
 	/** 是否需要步长 */
 	needStep: {
@@ -54,7 +71,7 @@ const props = defineProps({
 	// 最小值
 	min: {
 		type: Number,
-		default: 50
+		default: 0
 	},
 	// 最大值
 	max: {
@@ -82,8 +99,31 @@ const props = defineProps({
 	range: {
 		type: Boolean,
 		default: false
+	},
+	marks: {
+		type: Object as PropType<Record<string, Masks>>,
+		default: () => ({})
 	}
 })
+
+const maskList = computed(() => {
+	const arr: ({ num: number } & Mask)[] = []
+	Object.keys(props.marks).forEach((key) => {
+		const value = props.marks[key]
+		const num = +key
+		if (num >= props.min) {
+			if (typeUtils.isString(value)) {
+				arr.push({ num, label: value })
+			} else {
+				arr.push({ num, ...value })
+			}
+		}
+	})
+	return arr
+})
+
+/** 是否滑块是正序的 */
+const isPositive = ref(true)
 
 const emits = defineEmits(['update:modelValue'])
 
@@ -94,7 +134,7 @@ const stopsLen = computed(() => {
 const rangeValue = computed(() => {
 	if (props.range) {
 		const [left, right] = props.modelValue as RangeModelValue
-		return { left, right }
+		return isPositive.value ? { left, right } : { left: right, right: left }
 	} else {
 		return {
 			left: props.modelValue as number,
@@ -115,12 +155,45 @@ const sliderStyle = computed(() => {
 	}
 })
 
+let first: number | undefined
+let last: number | undefined
+
+/** 触发到父组件之前的计算 */
+function emitComputed(left: number | string, btnEnum: BtnEnum) {
+	let emitValue!: number | RangeModelValue
+	const mathValue = precisionFormat(
+		(+left / 100) * (props.max - props.min) + props.min
+	)
+	if (props.range) {
+		let leftValue = 0
+		let rightValue = 0
+		if (btnEnum === 'leftBtn') {
+			leftValue = mathValue
+			rightValue = last as number
+			emitValue = [leftValue, rightValue].sort(
+				(a, b) => a - b
+			) as RangeModelValue
+		} else {
+			leftValue = first as number
+			rightValue = mathValue
+			emitValue = [leftValue, rightValue].sort(
+				(a, b) => a - b
+			) as RangeModelValue
+		}
+		isPositive.value = leftValue <= rightValue
+	} else {
+		emitValue = mathValue
+	}
+	emits('update:modelValue', emitValue)
+}
+
 /** 鼠标放下触发 */
-function sliderMouseDown(ev: MouseEvent, btnEnum: 'leftBtn' | 'rightBtn') {
+function sliderMouseDown(ev: MouseEvent, btnEnum: BtnEnum) {
 	if (props.disabled) return
 	let left: number | string = 0
 	const { offsetX } = ev
 	const rect = sliderBox.value!.getBoundingClientRect()
+	;[first, last] = props.range ? (props.modelValue as RangeModelValue) : []
 	const mousemoveCallback = (ev: Event) => {
 		ev.preventDefault()
 		const btn = btnEnum === 'leftBtn' ? leftBtn.value : rightBtn.value
@@ -140,24 +213,12 @@ function sliderMouseDown(ev: MouseEvent, btnEnum: 'leftBtn' | 'rightBtn') {
 		} else {
 			left = (leftValue * 100).toFixed(2)
 		}
-
-		let emitValue!: number | RangeModelValue
-		const mathValue = precisionFormat(
-			(+left / 100) * (props.max - props.min) + props.min
-		)
-		if (props.range) {
-			if (btnEnum === 'leftBtn') {
-				emitValue = [mathValue, (props.modelValue as RangeModelValue)[1]]
-			} else {
-				emitValue = [(props.modelValue as RangeModelValue)[0], mathValue]
-			}
-		} else {
-			emitValue = mathValue
-		}
-		emits('update:modelValue', emitValue)
+		emitComputed(left, btnEnum)
 	}
+
 	domEvent.on(window, 'mousemove', mousemoveCallback)
 	const mouseUpCallback = () => {
+		isPositive.value = true
 		domEvent.off(window, 'mousemove', mousemoveCallback)
 		domEvent.off(window, 'mouseup', mouseUpCallback)
 	}
