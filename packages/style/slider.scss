@@ -1,6 +1,5 @@
 .st-slider {
 	position: relative;
-	width: 30%;
 	margin: 0 auto;
 	user-select: none;
 
@@ -25,6 +24,7 @@
 
 	&__stop-item {
 		display: block;
+		z-index: 1;
 		width: 4px;
 		height: 4px;
 		box-sizing: border-box;
@@ -37,5 +37,13 @@
 	&__label {
 		display: inline-block;
 		transform: translate(-50%, 10px);
+	}
+
+	&__section {
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		background-color: red;
 	}
 }

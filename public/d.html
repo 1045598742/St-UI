@@ -117,7 +117,7 @@
           targets: divEl,
           translateX: [middleWidth, middleWidth + Math.sin(ahd * i) * r],
           translateY: [middleHeight, middleHeight + Math.cos(ahd * i) * r],
-          // rotate: [-avd * i],
+          rotate: [-avd * i],
           loop: false,
           duration: 1
         })
@@ -136,7 +136,7 @@
         }
         anime({
           targets: stageDivEl.children[i],
-          height: [audioInfoArray[i] / 8],
+          height: [audioInfoArray[i] / 8] * 2,
           duration: 1
         })
 
@@ -161,7 +161,7 @@
     // BaseAudioContext
     btn.onclick = () => {
       const xhr = new XMLHttpRequest()
-      xhr.open('GET', 'static/秒针.mp3')
+      xhr.open('GET', 'static/vvs.mp3')
       xhr.responseType = 'blob'
       xhr.send()
 

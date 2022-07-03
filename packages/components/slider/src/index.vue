@@ -14,6 +14,7 @@
 			@mousedown="sliderMouseDown($event, 'rightBtn')"
 		></div>
 		<div class="st-slider__line">
+			<!-- steps -->
 			<template v-if="showStops">
 				<span
 					v-for="num in stopsLen"
@@ -24,7 +25,9 @@
 					class="st-slider__stop-item"
 				></span>
 			</template>
+			<!-- masks -->
 			<span
+				v-if="maskList && maskList.length"
 				v-for="mask in maskList"
 				:key="mask.num"
 				:style="{
@@ -34,6 +37,11 @@
 			>
 				<span class="st-slider__label">{{ mask.label }}</span>
 			</span>
+			<div
+				v-if="sectionStyle"
+				class="st-slider__section"
+				:style="sectionStyle"
+			></div>
 		</div>
 	</div>
 	<div>{{ modelValue }}</div>
@@ -54,6 +62,9 @@ export default {
 const leftBtn = shallowRef<HTMLDivElement>()
 const rightBtn = shallowRef<HTMLDivElement>()
 const sliderBox = shallowRef<HTMLDivElement>()
+
+/** 是否滑块是正序的 */
+const isPositive = ref(true)
 
 type RangeModelValue = [number, number]
 
@@ -106,6 +117,8 @@ const props = defineProps({
 	}
 })
 
+const emits = defineEmits(['update:modelValue'])
+
 const maskList = computed(() => {
 	const arr: ({ num: number } & Mask)[] = []
 	Object.keys(props.marks).forEach((key) => {
@@ -121,11 +134,6 @@ const maskList = computed(() => {
 	})
 	return arr
 })
-
-/** 是否滑块是正序的 */
-const isPositive = ref(true)
-
-const emits = defineEmits(['update:modelValue'])
 
 const stopsLen = computed(() => {
 	return (props.max - props.min) / props.step
@@ -152,6 +160,17 @@ const sliderStyle = computed(() => {
 			right !== null
 				? `${(Math.max(right - props.min, 0) / difference) * 100}%`
 				: null
+	}
+})
+
+const sectionStyle = computed(() => {
+	if (!props.range) return null
+	const { left, right } = sliderStyle.value
+	const leftNum = +left.slice(0, -1)
+	const rightNum = +right!.slice(0, -1)
+	return {
+		width: `${Math.abs(rightNum - leftNum)}%`,
+		left: `${Math.min(leftNum, rightNum)}%`
 	}
 })
 

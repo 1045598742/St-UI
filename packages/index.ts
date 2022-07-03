@@ -6,6 +6,7 @@ import { StAside, StMain, StHeader, StFooter } from './components/container'
 import { StRadio, StRadioGroup } from './components/radio'
 import { StSwitch } from './components/switch'
 import { StSlider } from './components/slider'
+import { StProgress } from './components/progress'
 import './style/index.scss'
 
 const install: Plugin = {
@@ -23,6 +24,7 @@ const install: Plugin = {
 		app.use(StRadioGroup)
 		app.use(StSwitch)
 		app.use(StSlider)
+		app.use(StProgress)
 	}
 }
 
@@ -32,5 +34,7 @@ export * from './components/checkbox'
 export * from './components/container'
 export * from './components/radio'
 export * from './components/switch'
+export * from './components/slider'
+export * from './components/progress'
 
 export default install

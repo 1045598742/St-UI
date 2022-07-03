@@ -33,6 +33,10 @@ export const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/slider',
 		component: () => import('@/views/slider.vue')
+	},
+	{
+		path: '/progress',
+		component: () => import('@/views/progress.vue')
 	}
 ]
 
