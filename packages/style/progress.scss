@@ -1,12 +1,64 @@
 .st-progress {
   &__line {
-    height: 6px;
-    background-color: red;
+    .st-progress__shell {
+      height: 6px;
+      background-color: #ebeef5;
+      border-radius: 100px;
+      overflow: hidden;
+  
+      .st-progress__kernel {
+        height: 100%;
+        background-color: green;
+        transition: width 0.3s linear, background-color 0.3s linear;
+        border-radius: inherit;
+        line-height: 100%;
+        font-size: 12px;
+        color: #fff;
+        text-align: right;
+        white-space: nowrap;
+  
+        &::after {
+          content: '';
+          display: inline-block;
+          height: 100%;
+          vertical-align: middle;
+        }
+  
+        .progress-inner__text {
+          font-size: 12px;
+          margin: -1.5px 5px 0;
+          vertical-align: middle;
+          display: inline-block;
+        }
+      }
+    }
+  }
 
-    .st-progress__value {
-      height: 100%;
-      background-color: green;
-      transition: all 0.3s linear;
+  &__circle {
+    position: relative;
+
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    .progress-inner__text {
+      font-size: 14px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      word-break: break-word;
+    }
+
+    .st-progress__shell {
+      stroke: #ebeef5;
+    }
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    .st-progress__kernel {
+      transition: stroke 0.3s linear, stroke-dasharray 0.3s linear;
     }
   }
 }
