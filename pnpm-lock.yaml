@@ -20,6 +20,7 @@ specifiers:
   gulp-rename: ^2.0.0
   gulp-sass: ^5.1.0
   html-webpack-plugin: ^5.5.0
+  mzl-ui: ^0.8.8
   postcss: ^8.4.12
   postcss-html: ^1.4.1
   prettier: ^2.6.2
@@ -69,6 +70,7 @@ devDependencies:
   gulp-rename: 2.0.0
   gulp-sass: 5.1.0
   html-webpack-plugin: 5.5.0_webpack@5.72.0
+  mzl-ui: 0.8.8
   postcss: 8.4.12
   postcss-html: 1.4.1
   prettier: 2.6.2
@@ -3743,6 +3745,11 @@ packages:
   /mute-stdout/1.0.1:
     resolution: {integrity: sha512-kDcwXR4PS7caBpuRYYBUz9iVixUk3anO3f5OYFiIPwK/20vCzKCHyKoulbiDY1S53zD2bxUpxN/IJ+TnXjfvxg==}
     engines: {node: '>= 0.10'}
+    dev: true
+
+  /mzl-ui/0.8.8:
+    resolution: {integrity: sha512-w1YQOgJVvKojA5vyQou15Xy6JxcizmR14THmyLMwt9GwGVygJfLANkvxj7Cv7GGd0SRpm2UFegrkMkkL2h9SpA==}
+    engines: {node: '>= 14'}
     dev: true
 
   /nan/2.15.0:

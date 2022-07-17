@@ -16,5 +16,7 @@ declare module 'vue' {
 		StSwitch: typeof import('@st-ui/components/switch/index').StSwitch
 		StSlider: typeof import('@st-ui/components/slider/index').StSlider
 		StProgress: typeof import('@st-ui/components/progress/index').StProgress
+		StPopover: typeof import('@st-ui/components/popover/index').StPopover
+		StSelect: typeof import('@st-ui/components/select/index').StSelect
 	}
 }

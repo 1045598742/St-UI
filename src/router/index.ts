@@ -37,6 +37,14 @@ export const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/progress',
 		component: () => import('@/views/progress.vue')
+	},
+	{
+		path: '/popover',
+		component: () => import('@/views/popover.vue')
+	},
+	{
+		path: '/select',
+		component: () => import('@/views/select.vue')
 	}
 ]
 

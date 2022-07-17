@@ -36,6 +36,7 @@
     "gulp-rename": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "html-webpack-plugin": "^5.5.0",
+    "mzl-ui": "^0.8.8",
     "postcss": "^8.4.12",
     "postcss-html": "^1.4.1",
     "prettier": "^2.6.2",

@@ -7,6 +7,8 @@ import { StRadio, StRadioGroup } from './components/radio'
 import { StSwitch } from './components/switch'
 import { StSlider } from './components/slider'
 import { StProgress } from './components/progress'
+import { StPopover } from './components/popover'
+import { StSelect } from './components/select'
 import './style/index.scss'
 
 const install: Plugin = {
@@ -25,6 +27,8 @@ const install: Plugin = {
 		app.use(StSwitch)
 		app.use(StSlider)
 		app.use(StProgress)
+		app.use(StPopover)
+		app.use(StSelect)
 	}
 }
 

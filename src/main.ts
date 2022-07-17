@@ -6,5 +6,5 @@ import router from './router'
 // import 'element-plus/dist/index.css'
 
 const app = createApp(App)
-app.use(StUI).use(router).mount('#app')
 // app.use(ElementPlus)
+app.use(StUI).use(router).mount('#app')
