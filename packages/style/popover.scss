@@ -23,6 +23,7 @@
     position: absolute;
     left: 50%;
     top: -5px;
+    z-index: -1;
     transform: translateX(-50%) rotate(45deg);
   }
 }

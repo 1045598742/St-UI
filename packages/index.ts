@@ -8,7 +8,7 @@ import { StSwitch } from './components/switch'
 import { StSlider } from './components/slider'
 import { StProgress } from './components/progress'
 import { StPopover } from './components/popover'
-import { StSelect } from './components/select'
+import { StSelect, StOption } from './components/select'
 import './style/index.scss'
 
 const install: Plugin = {
@@ -29,6 +29,7 @@ const install: Plugin = {
 		app.use(StProgress)
 		app.use(StPopover)
 		app.use(StSelect)
+		app.use(StOption)
 	}
 }
 

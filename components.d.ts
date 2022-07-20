@@ -18,5 +18,6 @@ declare module 'vue' {
 		StProgress: typeof import('@st-ui/components/progress/index').StProgress
 		StPopover: typeof import('@st-ui/components/popover/index').StPopover
 		StSelect: typeof import('@st-ui/components/select/index').StSelect
+		StOption: typeof import('@st-ui/components/select/index').StOption
 	}
 }

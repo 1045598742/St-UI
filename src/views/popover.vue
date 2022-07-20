@@ -1,11 +1,20 @@
 <template>
-	<button>66666</button>
-	<st-popover trigger="click" width-type="extendReference">
-		<template #reference>
-			<st-button>popover</st-button>
-		</template>
-		<template #popover-content>main</template>
-	</st-popover>
+	<div :style="{ position: 'relative' }">
+		<st-popover trigger="click" width-type="extendReference">
+			<template #reference>
+				<st-button>popover</st-button>
+			</template>
+			<template #popover-content>main</template>
+		</st-popover>
+
+		<st-popover trigger="click" width-type="extendReference">
+			<template #reference>
+				<st-button>popover</st-button>
+			</template>
+			<template #popover-content>main</template>
+		</st-popover>
+	</div>
+
 	<hr />
 	<!-- <el-popover
 		placement="top-start"

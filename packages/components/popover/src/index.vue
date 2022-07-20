@@ -23,9 +23,22 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { computed, CSSProperties, Directive, PropType, ref } from 'vue'
+import {
+	computed,
+	CSSProperties,
+	Directive,
+	PropType,
+	ref,
+	watchEffect,
+	watch,
+	nextTick
+} from 'vue'
 
 const props = defineProps({
+	modelValue: {
+		type: Boolean,
+		default: false
+	},
 	appendToBody: {
 		type: Boolean,
 		default: true
@@ -44,12 +57,17 @@ const props = defineProps({
 	}
 })
 
+const emits = defineEmits(['update:modelValue'])
+
 const referenceEl = ref<HTMLElement>()
 
-const show = ref(false)
+const show = ref(true)
 
 const popoverStyle = ref<{ style: CSSProperties }>({
-	style: {}
+	style: {
+		top: 0,
+		left: 0
+	}
 })
 
 const vClickOutSide: Directive = {
@@ -72,21 +90,58 @@ const vClickOutSide: Directive = {
 	}
 }
 
-function openPopover(ev: Event) {
-	const el = referenceEl.value as HTMLElement
-	const rect = el.getBoundingClientRect()
-	popoverStyle.value.style = {
-		top: `${rect.bottom + 10}px`,
-		left: `${rect.left}px`,
-		zIndex: 1000,
-		minWidth:
-			props.widthType === 'extendReference' ? `${rect.width}px` : props.minWidth
+function computedStyle() {
+	const showValue = show.value
+	if (referenceEl.value) {
+		const el = referenceEl.value as HTMLElement
+		const rect = el.getBoundingClientRect()
+		if (props.appendToBody) {
+			popoverStyle.value.style = {
+				top: `${rect.bottom + 10}px`,
+				left: `${rect.left}px`,
+				zIndex: 1000,
+				'--translateX': 0,
+				'--translateY': 0,
+				minWidth:
+					props.widthType === 'extendReference'
+						? `${rect.width}px`
+						: props.minWidth
+			} as any
+		} else {
+			// todo 如果不是追加到body的情况
+			// popoverStyle.value.style = {
+			// 	top: 0,
+			// 	left: 0,
+			// 	zIndex: 1000,
+			// 	'--translateX': `${rect.left}px`,
+			// 	'--translateY': `${rect.bottom + 10}px`,
+			// 	minWidth:
+			// 		props.widthType === 'extendReference'
+			// 			? `${rect.width}px`
+			// 			: props.minWidth
+			// } as any
+		}
 	}
+}
+
+watch(
+	() => props.modelValue,
+	(visible) => {
+		show.value = visible
+	},
+	{ immediate: true }
+)
+
+watch(show, computedStyle)
+
+function openPopover(ev: Event) {
 	show.value = true
+	emits('update:modelValue', show.value)
 }
 
 function closePopover(ev: Event) {
 	show.value = false
+	emits('update:modelValue', show.value)
 }
 
 const listeners = computed(() => {
