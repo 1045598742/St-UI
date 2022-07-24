@@ -1,7 +1,7 @@
 <template>
 	<st-popover v-model="visible" trigger="click" width-type="extendReference">
 		<template #reference>
-			<st-input v-model="value" readonly clearable />
+			<st-input v-model="value" readonly clearable :disabled="disabled" />
 		</template>
 		<template #popover-content>
 			<ul>
@@ -24,11 +24,18 @@ export default {
 
 <script lang="ts" setup>
 const props = defineProps({
+	/** v-model绑定的值 */
 	modelValue: {
 		type: [String, Number] as PropType<string | number>,
 		default: ''
 	},
+	/** 是否禁用 */
 	disabled: {
+		type: Boolean,
+		default: false
+	},
+	/** 是否显示清空按钮 */
+	clearable: {
 		type: Boolean,
 		default: false
 	}

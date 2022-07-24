@@ -45,6 +45,10 @@ export const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/select',
 		component: () => import('@/views/select.vue')
+	},
+	{
+		path: '/tag',
+		component: () => import('@/views/tag.vue')
 	}
 ]
 

@@ -25,6 +25,11 @@
 }
 
 /* stylelint-disable-next-line selector-class-pattern */
+.st-icon_close::before {
+  content: "\e69e";
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
 .st-icon_loading::before {
   content: "\e644";
 }

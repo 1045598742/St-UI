@@ -1,0 +1,13 @@
+.st-zoom-in-center-enter-active {
+  transition: all 0.15s ease-out;
+}
+
+.st-zoom-in-center-leave-active {
+  transition: all 0.15s ease-out;
+}
+
+.st-zoom-in-center-enter-from,
+.st-zoom-in-center-leave-to {
+  transform: scaleX(0);
+  opacity: 0;
+}
